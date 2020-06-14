@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+	<meta charset="UTF-8">
+	<title>SatelliteStatistic</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+	<style type="text/css">
+	div#first{
+		width: 100%;
+		height: 700px;
+		float: left;
+		background-color: white;
+	}
+	#second{
+		width: 100%;
+		height: 700px;
+		float: right;
+		background-color: white;
+	}
+	#third{
+		width: 100%;
+		height: 700px;
+		float: left;
+		background-color: white;
+	}
+	</style>
+</head>
+<body>
+    <b-tooltip v-if="showUI" label="Chart statistics" position="is-left">
+        <a class="cesium-button cesium-toolbar-button" href="http://localhost:8080/" rel="noopener">
+          <span class="icon fill-parent">
+            <i class="fa fa-reply"></i>
+          </span>
+        </a>
+    </b-tooltip>
+    <div id="second">
+        <!--<div id="container" style="width: 100%;height: 700px;float: left"></div>-->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+        <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+        <script type="text/javascript">
+            var dom = document.getElementById("second");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            option = {
+                title: {
+                    text: '全球在轨卫星数量地图',
+                   textStyle:{
+                                   fontSize:35,
+                               },
+                    subtext: 'data from space-track',
+                    sublink: 'https://www.space-track.org/basicspacedata/query/class/boxscore/format/html',
+                    left: 'center',
+                    top: 'top'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function (params) {
+                        var value = (params.value + '').split('.');
+                        value ;
+                        return params.seriesName + '<br/>' + params.name + ' : ' + value+'颗';
+                    }
+                },
+                toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    left: 'right',
+                    top: 'center',
+                    feature: {
+                        dataView: {readOnly: false},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+            
+             visualMap: {
+                        top: 750,
+                        x: 50,
+                       min: 0,
+                      max: 10000,
+                     
+                        textStyle: {
+                            color: '#000'
+                        },
+                        pieces: [
+                            {
+                                gt: 1,
+                                lte: 10,
+                                color: '#ebdba4'
+                            },
+                            {
+                                gt: 10,
+                                lte: 50,
+                                color: '#f2d643'
+                            },
+                            {
+                                gt: 50,
+                                lte: 100,
+                                color: '#ffb248'
+                            },
+                            {
+                                gt: 100,
+                                lte: 500,
+                                color: '#eb8146'
+                            },
+                            {
+                                gt: 500,
+                                lte: 1000,
+                                color: '#d95850'
+                            },
+                            {
+                                gt: 1000,
+                                color: '#f48023'
+                            }
+                        ],
+            
+                    },
+            
+            
+                series: [
+                    {
+                        name: '在轨卫星数量',
+                        type: 'map',
+                        mapType: 'world',
+                        roam: true,
+                        emphasis: {
+                            label: {
+                                show: true
+                            }
+                        },
+                        data:[
+                            {name: 'Afghanistan', value: 0},
+                            {name: 'United States', value:7040},
+                            {name: 'Angola', value:1},
+                            {name: 'Albania', value:6},
+                            {name: 'United Arab Emirates', value: 0},
+                            {name: 'Argentina', value:23},
+                            {name: 'Armenia', value: 0},
+                            {name: 'French Southern and Antarctic Lands', value: 0},
+                           {name: 'Australia', value: 3},
+                           {name: 'Austria', value: 22},
+                            {name: 'Azerbaijan', value: 3},
+                            {name: 'Burundi', value: 0},
+                            {name: 'Belgium', value: 4},
+                            {name: 'Benin', value: 0},
+                            {name: 'Burkina Faso', value:0},
+                            {name: 'Bangladesh', value:0},
+                           {name: 'Bulgaria', value: 1},
+                            {name: 'The Bahamas', value: 0},
+                            {name: 'Bosnia and Herzegovina', value: 0},
+                            {name: 'Belarus', value: 2},
+                            {name: 'Belize', value: 0},
+                            {name: 'Bermuda', value: 1},
+                           {name: 'Bolivia', value:1},
+                            {name: 'Brazil', value: 17},
+                            {name: 'Brunei', value: 0},
+                            {name: 'Bhutan', value: 0},
+                            {name: 'Botswana', value: 0},
+                            {name: 'Central African Republic', value: 0},
+                           {name: 'Canada', value:59},
+                           {name: 'Switzerland', value: 0},
+                           {name: 'Chile', value:3},
+                           {name: 'China', value: 4146},
+                          {name: 'Ivory Coast', value: 0},
+                            {name: 'Cameroon', value: 0},
+                            {name: 'Democratic Republic of the Congo', value:0},
+                            {name: 'Republic of the Congo', value: 0},
+                            {name: 'Colombia', value: 2},
+                            {name: 'Costa Rica', value: 0},
+                            {name: 'Cuba', value: 0},
+                            {name: 'Northern Cyprus', value: 0},
+                            {name: 'Cyprus', value: 0},
+                           {name: 'Czech Republic', value: 6},
+                            {name: 'Germany', value: 0},
+                            {name: 'Djibouti', value: 0},
+                            {name: 'Denmark', value:10},
+                            {name: 'Dominican Republic', value: 0},
+                            {name: 'Algeria', value: 6},
+                            {name: 'Ecuador', value: 0},
+                            {name: 'Egypt', value: 9},
+                            {name: 'Eritrea', value: 0},
+                            {name: 'Spain', value: 0},
+                           {name: 'Estonia', value:1},
+                            {name: 'Ethiopia', value:0},
+                            {name: 'Finland', value: 7},
+                            {name: 'Fiji', value: 0},
+                            {name: 'Falkland Islands', value:0},
+                            {name: 'France', value:579},
+                            {name: 'Gabon', value: 0},
+                            {name: 'United Kingdom', value: 0},
+                            {name: 'Georgia', value: 0},
+                            {name: 'Ghana', value: 0},
+                            {name: 'Guinea', value: 0},
+                            {name: 'Gambia', value: 0},
+                            {name: 'Guinea Bissau', value:0},
+                            {name: 'Equatorial Guinea', value: 0},
+                            {name: 'Greece', value:3},
+                            {name: 'Greenland', value: 0},
+                            {name: 'Guatemala', value: 0},
+                            {name: 'French Guiana', value:0},
+                            {name: 'Guyana', value: 0},
+                            {name: 'Honduras', value:0},
+                            {name: 'Croatia', value: 0},
+                            {name: 'Haiti', value: 0},
+                            {name: 'Hungary', value: 2},
+                            {name: 'Indonesia', value: 0},
+                            {name: 'India', value: 229},
+                            {name: 'Ireland', value: 0},
+                            {name: 'Iran', value: 1},
+                            {name: 'Iraq', value: 1},
+                            {name: 'Iceland', value: 0},
+                            {name: 'Israel', value: 20},
+                            {name: 'Italy', value: 32},
+                            {name: 'Jamaica', value: 0},
+                            {name: 'Jordan', value: 1},
+                           {name: 'Japan', value:300},
+                            {name: 'Kazakhstan', value: 8},
+                            {name: 'Kenya', value: 1},
+                            {name: 'Kyrgyzstan', value: 0},
+                            {name: 'Cambodia', value: 0},
+                           {name: 'Korea', value: 25},
+                            {name: 'Kosovo', value: 0},
+                            {name: 'Kuwait', value: 0},
+                            {name: 'Laos', value: 1},
+                            {name: 'Lebanon', value: 0},
+                            {name: 'Liberia', value: 0},
+                            {name: 'Libya', value: 0},
+                            {name: 'Sri Lanka', value: 0},
+                            {name: 'Lesotho', value:0},
+                            {name: 'Lithuania', value: 3},
+                            {name: 'Luxembourg', value: 0},
+                            {name: 'Latvia', value: 0},
+                           {name: 'Morocco', value: 2},
+                            {name: 'Moldova', value: 0},
+                            {name: 'Madagascar', value: 0},
+                            {name: 'Mexico', value: 11},
+                            {name: 'Macedonia', value: 0},
+                            {name: 'Mali', value: 0},
+                            {name: 'Myanmar', value: 0},
+                            {name: 'Montenegro', value: 0},
+                            {name: 'Mongolia', value: 0},
+                            {name: 'Mozambique', value: 0},
+                            {name: 'Mauritania', value: 0},
+                            {name: 'Malawi', value: 0},
+                            {name: 'Malaysia', value: 0},
+                            {name: 'Namibia', value: 0},
+                            {name: 'New Caledonia', value:0},
+                            {name: 'Niger', value: 0},
+                            {name: 'Nigeria', value: 5},
+                            {name: 'Nicaragua', value: 0},
+                           {name: 'Netherlands', value: 8},
+                            {name: 'Norway', value:11},
+                            {name: 'Nepal', value: 0},
+                            {name: 'New Zealand', value:0},
+                            {name: 'Oman', value: 0},
+                            {name: 'Pakistan', value:6},
+                            {name: 'Panama', value: 0},
+                            {name: 'Peru', value: 2},
+                            {name: 'Philippines', value: 0},
+                            {name: 'Papua New Guinea', value: 0},
+                            {name: 'Poland', value: 5},
+                            {name: 'Puerto Rico', value: 0},
+                            {name: 'North Korea', value: 5},
+                           {name: 'Paraguay', value: 0},
+                          {name: 'Qatar', value: 0},
+                            {name: 'Romania', value: 0},
+                            {name: 'Russia', value: 134},
+                           {name: 'Rwanda', value:1},
+                            {name: 'Western Sahara', value: 0},
+                            {name: 'Saudi Arabia', value: 15},
+                            {name: 'Sudan', value: 1},
+                            {name: 'South Sudan', value: 0},
+                            {name: 'Senegal', value: 0},
+                            {name: 'Solomon Islands', value: 0},
+                            {name: 'Sierra Leone', value: 0},
+                            {name: 'El Salvador', value: 0},
+                            {name: 'Somaliland', value:0},
+                            {name: 'Somalia', value: 0},
+                            {name: 'Republic of Serbia', value: 0},
+                            {name: 'Suriname', value: 0},
+                            {name: 'Slovakia', value: 0},
+                            {name: 'Slovenia', value: 0},
+                            {name: 'Sweden', value:11},
+                            {name: 'Swaziland', value: 0},
+                            {name: 'Syria', value: 0},
+                            {name: 'Chad', value: 0},
+                            {name: 'Togo', value: 0},
+                            {name: 'Thailand', value: 10},
+                            {name: 'Tajikistan', value: 0},
+                            {name: 'Turkmenistan', value: 1},
+                            {name: 'East Timor', value: 0},
+                            {name: 'Trinidad and Tobago', value: 0},
+                            {name: 'Tunisia', value: 0},
+                            {name: 'Turkey', value: 13},
+                            {name: 'United Republic of Tanzania', value:0},
+                            {name: 'Uganda', value: 0},
+                            {name: 'Ukraine', value: 0},
+                            {name: 'Uruguay', value: 1},
+                            {name: 'Uzbekistan', value: 0},
+                            {name: 'Venezuela', value: 3},
+                            {name: 'Vietnam', value: 3},
+                            {name: 'Vanuatu', value:0},
+                            {name: 'West Bank', value: 0},
+                            {name: 'Yemen', value: 0},
+                            {name: 'South Africa', value: 6},
+                            {name: 'Zambia', value: 0},
+                            {name: 'Zimbabwe', value: 0}
+                        ]
+                    }
+                ]
+            };;
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        </script>
+        </div>  
+    <div id="first">
+        <!--<div id="container" style="width: 100%;height: 700px;float: left"></div>-->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+        <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+        <script type="text/javascript">
+            /**var dom = document.getElementById("container");**/
+            var dom = document.getElementById("first")
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            option = {
+                title: {
+                    left: 'center',
+                    text: '世界五大航天强国在轨数据',
+                    textStyle:{
+                        fontSize:30,
+                    },
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                legend: {
+                    bottom: '92%',
+                    data: ['在轨有效负载数', '在轨火箭弹数', '在轨残骸数', '在轨物体总数']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    top:100,
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['美国', '独联体', '中国', '日本','法国']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                {
+                    name: '在轨有效负载数',
+                    type: 'bar',
+                    color:'#9b8bba',
+                    data: [2129, 1540,401,185,69]
+                },
+                {
+                    name: '在轨火箭弹数',
+                    type: 'bar',
+                    color:'#e098c7',
+                    stack: '广告',
+                    data: [708, 1047,168,60,163]
+                },
+                {
+                    name: '在轨残骸数',
+                    type: 'bar',
+                    color:'#8fd3e8',
+                    stack: '广告',
+                    data: [4185, 4239,3552,55,347]
+                },
+       
+                {
+                    name: '在轨物体总数',
+                    type: 'bar',
+                    color:'#71669e',
+                    data: [7040,6829 ,4146,300,579],
+                    markLine: {
+                        lineStyle: {
+                            type: 'dashed'
+                        },
+                    }
+                },
+                ]
+            };;
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        </script>
+        </div>      
+	<div id="third">
+		<!--<div id="container" style="width: 100%;height: 700px;float: left"></div>-->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+        <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+        <script type="text/javascript">
+        	var dom = document.getElementById("third");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            var dataMap = {};
+            
+            dataMap.datapoint1 = {
+                //在轨有效负载数
+                2019: [401, 2129, 1540, 185, 125, 100],
+                2018: [360, 1819, 1470, 155, 60, 53],
+                2017: [286, 1684, 1392, 130, 49, 44],
+                2016: [199, 1323, 1136, 111, 38, 36],
+                2015: [185, 1267, 950, 92, 29, 28],
+            };
+            
+            dataMap.datapoint2 = {
+                //'在轨卫星数
+                2019: [281, 830, 147, 75, 54, 54],
+                2018: [299, 901, 153, 87, 63, 58],
+                2017: [192, 593, 135, 67, 55, 43],
+                2016: [142, 549, 131, 55, 39, 31],
+                2015: [177, 568, 133, 56, 42, 36],
+            };
+            
+            dataMap.datapoint3 = {
+                //'在轨残骸数'
+                2019: [3552, 4185, 4239, 55, 1, 92],
+                2018: [3027, 3639, 3570, 49, 3, 71],
+                2017: [2359, 3140, 3263, 43, 5, 35],
+                2016: [1874, 2752, 2859, 40, 22, 45],
+                2015: [1465, 2447, 2341, 34, 8, 18],
+            };
+            
+            dataMap.datapoint4 = {
+                //'在轨物体总数'
+                2019: [4146, 7040, 6829, 300, 127, 229],
+                2018: [3527, 6321, 6123, 282, 125, 213],
+                2017: [2961, 5620, 5554, 237, 119, 155],
+                2016: [2184, 4908, 4765, 203, 111, 132],
+                2015: [1853, 4258, 4015, 181, 80, 98],
+            };
+
+            option = {
+                baseOption: {
+                    timeline: {
+                        // y: 0,
+                        axisType: 'category',
+                        // realtime: false,
+                        // loop: false,
+                        autoPlay: true,
+                        // currentIndex: 2,
+                        playInterval: 1000,
+                        // controlStyle: {
+                        //     position: 'left'
+                        // },
+                        data: ['2015', '2016', '2017', '2018', '2019'],
+                        label: {
+                            formatter: function(s) {
+                                return (new Date(s)).getFullYear();
+                            }
+                        }
+                    },
+                    title: {
+                        subtext: '数据来自网络',
+                    },
+                    tooltip: {},
+                    legend: {
+                        x: 100,
+                        y: 60,
+                        itemGap: 20,
+                        itemWidth: 28,
+                        itemHeight: 18,
+                        data: ['在轨有效负载数', '在轨卫星数','在轨残骸数', '在轨物体总数'],
+                        
+                    },
+                    calculable: true,
+                    grid: {
+                        top: 150,
+                        right: '39%',
+                        left: '5%',
+                        bottom: 100,
+                    },
+                    xAxis: [{
+                        'type': 'category',
+                        name:'国家',
+                        'axisLabel': {
+                            'interval': 0
+                        },
+                        'data': [
+                            '中国', '美国', '俄罗斯', '日本','英国', '印度'
+                        ],
+                        splitLine: {
+                            show: true
+                        }
+                    }],
+                    yAxis: [{
+                        type: 'value',
+                        name: '物体数量',
+                    }],
+                    polar: [{
+                        indicator: [{
+                            name: '中国',
+                            max: 4146
+            
+                        }, {
+                            name: '美国',
+                            max: 7040
+            
+                        }, {
+                            name: '俄罗斯',
+                            max: 6829
+            
+                        }, {
+                            name: '日本',
+                            max: 300
+            
+                        }, {
+                            name: '英国',
+                            max: 579
+            
+                        }, {
+                            name: '印度',
+                            max: 498
+            
+                        }],
+                        center: ['82%', '50%'],
+                        radius: 200
+                    }],
+                    calculable: true,
+            
+                    series: [{
+                        name: '在轨有效负载数',
+                        type: 'bar'
+                    }, {
+                        name: '在轨卫星数',
+                        type: 'bar'
+                    }, {
+                        name: '在轨残骸数',
+                        type: 'bar'
+                    }, {
+                        name: '在轨物体总数',
+                        type: 'bar'
+                    }, {
+                        name: '对比',
+                        type: 'radar',
+                    }]
+                },
+                options: [            
+                    {
+                        title: {
+                            text: '2015年各卫星强国太空各类物体数量情况',
+                            x: 'center',
+                            textStyle:{
+                                fontSize:35,
+                            },
+                        },
+                        series: [{
+                            data: dataMap.datapoint1['2015']
+                        }, {
+                            data: dataMap.datapoint2['2015']
+                        }, {
+                            data: dataMap.datapoint3['2015']
+                        }, {
+                            data: dataMap.datapoint4['2015']
+                        }, {
+                            data: [{
+                                name: '在轨有效负载数',
+                                value: dataMap.datapoint1['2015']
+                            }, {
+                                name: '在轨火箭弹数',
+                                value: dataMap.datapoint2['2015']
+                            }, {
+                                name: '在轨残骸数',
+                                value: dataMap.datapoint3['2015']
+                            }, {
+                                name: '在轨物体总数',
+                                value: dataMap.datapoint4['2015']
+                            }]
+                        }]
+                    }, {
+                        title: {
+                            text: '2016年各卫星强国太空各类物体数量情况'
+                        },
+                        series: [{
+                            data: dataMap.datapoint1['2016']
+                        }, {
+                            data: dataMap.datapoint2['2016']
+                        }, {
+                            data: dataMap.datapoint3['2016']
+                        }, {
+                            data: dataMap.datapoint4['2016']
+                        }, {
+                            data: [{
+                                name: '在轨有效负载数',
+                                value: dataMap.datapoint1['2016']
+                            }, {
+                                name: '在轨火箭弹数',
+                                value: dataMap.datapoint2['2016']
+                            }, {
+                                name: '在轨残骸数',
+                                value: dataMap.datapoint3['2016']
+                            }, {
+                                name: '在轨物体总数',
+                                value: dataMap.datapoint4['2016']
+                            }]
+                        }]
+                    }, {
+                        title: {
+                            text: '2017年各卫星强国太空各类物体数量情况'
+                        },
+                        series: [{
+                            data: dataMap.datapoint1['2017']
+                        }, {
+                            data: dataMap.datapoint2['2017']
+                        }, {
+                            data: dataMap.datapoint3['2017']
+                        }, {
+                            data: dataMap.datapoint4['2017']
+                        }, {
+                            data: [{
+                                name: '在轨有效负载数',
+                                value: dataMap.datapoint1['2017']
+                            }, {
+                                name: '在轨火箭弹数',
+                                value: dataMap.datapoint2['2017']
+                            }, {
+                                name: '在轨残骸数',
+                                value: dataMap.datapoint3['2017']
+                            }, {
+                                name: '在轨物体总数',
+                                value: dataMap.datapoint4['2017']
+                            }]
+                        }]
+                    },
+                     {
+                        title: {
+                            text: '2018年各卫星强国太空各类物体数量情况'
+                        },
+                        series: [{
+                            data: dataMap.datapoint1['2018']
+                        }, {
+                            data: dataMap.datapoint2['2018']
+                        }, {
+                            data: dataMap.datapoint3['2018']
+                        }, {
+                            data: dataMap.datapoint4['2018']
+                        }, {
+                            data: [{
+                                name: '在轨有效负载数',
+                                value: dataMap.datapoint1['2018']
+                            }, {
+                                name: '在轨火箭弹数',
+                                value: dataMap.datapoint2['2018']
+                            }, {
+                                name: '在轨残骸数',
+                                value: dataMap.datapoint3['2018']
+                            }, {
+                                name: '在轨物体总数',
+                                value: dataMap.datapoint4['2018']
+                            }]
+                        }]
+                    },
+                     {
+                        title: {
+                            text: '2019年各卫星强国太空各类物体数量情况'
+                        },
+                        series: [{
+                            data: dataMap.datapoint1['2019']
+                        }, {
+                            data: dataMap.datapoint2['2019']
+                        }, {
+                            data: dataMap.datapoint3['2019']
+                        }, {
+                            data: dataMap.datapoint4['2019']
+                        }, {
+                            data: [{
+                                name: '在轨有效负载数',
+                                value: dataMap.datapoint1['2019']
+                            }, {
+                                name: '在轨火箭弹数',
+                                value: dataMap.datapoint2['2019']
+                            }, {
+                                name: '在轨残骸数',
+                                value: dataMap.datapoint3['2019']
+                            }, {
+                                name: '在轨物体总数',
+                                value: dataMap.datapoint4['2019']
+                            }]
+                        }]
+                    },
+                ]
+            };
+            ;
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        </script>
+        </div>
+</body>
+</html>
